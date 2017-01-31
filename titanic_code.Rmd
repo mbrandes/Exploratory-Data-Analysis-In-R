@@ -1,0 +1,56 @@
+---
+title: "Titanic"
+author: "Mark Brandes"
+date: "December 20, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+## Needed libraries
+```
+library(tidyr)
+library(dplyr)
+```
+
+## 0: Load the data in RStudio
+```
+library(readxl)
+titanic3 <- read_excel("~/Springboard Training/titanic3.xlsx")
+titanic_original <- titanic3
+```
+
+## 1: Port of embarkation
+```
+for (i in 1:length(titanic_original$embarked)){
+if (is.na(titanic_original$embarked[i])){
+    titanic_original$embarked[i] <- "S"
+}}
+```
+
+## 2: Age
+```
+average_age <- mean(titanic_original$age, na.rm=TRUE)
+for (i in 1:length(titanic_original$age)){
+if (is.na(titanic_original$age[i])){
+    titanic_original$age[i] <- average_age
+}}
+```
+
+## 3: Lifeboat
+
+## Appears to have already been done - Possibly during the import
+
+## 4: Cabin
+```
+titanic_original <- mutate(titanic_original,has_cabin_number = ifelse(is.na(titanic_original$cabin), 0, 1))
+```
+
+## Print out clean data
+
+titanic_clean <- titanic_original
+write.csv(titanic_clean, file = "tiantic_clean.csv")
